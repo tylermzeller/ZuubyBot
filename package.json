@@ -1,0 +1,14 @@
+{
+  "name": "zuubybot",
+  "version": "1.0.0",
+  "description": "A Twitch bot with an undefined purpose",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tyler Zeller",
+  "license": "MIT",
+  "dependencies": {
+    "tmi.js": "^1.1.1"
+  }
+}
