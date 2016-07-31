@@ -2,6 +2,7 @@ var mysql = require('mysql');
 var storageConfig = require('../options').storageConfig;
 var selectHelper = require('./select');
 var insertHelper = require('./insert');
+var updateHelper = require('./update');
 
 var pool  = mysql.createPool({
     connectionLimit : storageConfig.pool_limit,
@@ -105,6 +106,22 @@ var getFen = function(playerID, callback) {
 	}, callback);
 }; // END getFen()
 
+var updateGameFen = function(playerID, fen, callback) {
+	var game = {
+		User_id: playerID,
+		Fen: fen,
+		Active: 1
+	};
+
+	getConnection(function(connection){
+		updateHelper.updateGameSetFen(connection, game, function(){
+			connection.release(); // Done with connection
+			// Do not use connection below here, it has been returned to the pool
+			callback();
+		}, callback);
+	}, callback);
+};
+
 function getConnection(execute, callback) {
 	pool.getConnection(function(err, connection) {
         if (err) {
@@ -122,6 +139,7 @@ module.exports = {
   getPlayer: getPlayer,
   addGame: addGame,
   getGame: getGame,
-  getFen: getFen
+  getFen: getFen,
+  updateGameFen: updateGameFen
 };
 

@@ -121,9 +121,15 @@ function handleMoveCommand(channel, user, message) {
 							return;
 						}
 
-						// TODO: update fen in db
+						queries.updateGameFen(player.id, newFen, function(err) {
+							if (err){
+								console.log(err);
+								client.whisper(player.User_name, 'There was an error updating the game.');
+								return;
+							}
 
-						client.whisper(player.User_name, 'I played the move ' + zuubyMove);
+							client.whisper(player.User_name, 'I played the move ' + zuubyMove);
+						});
 					});
 
 				} else {
