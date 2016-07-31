@@ -84,6 +84,27 @@ var getGame = function(playerID, callback) {
 	}, callback);
 }; // END getGame()
 
+var getFen = function(playerID, callback) {
+	var game = {
+		User_id: playerID,
+		Active: 1	
+	};
+
+	getConnection(function(connection) {
+		selectHelper.selectFenFromGameWhere(connection, game, function(result){
+			connection.release(); // Done with connnection
+			// Do not use connection below here, it has been returned to the pool
+			if (result.length === 1){
+				callback(null, result[0].Fen);
+			} else if (result.length === 0){
+				callback();
+			} else if (result.length > 1){
+				callback('Too many entries in database.');
+			}
+		}, callback);
+	}, callback);
+}; // END getFen()
+
 function getConnection(execute, callback) {
 	pool.getConnection(function(err, connection) {
         if (err) {
@@ -100,6 +121,7 @@ module.exports = {
   addPlayer: addPlayer,
   getPlayer: getPlayer,
   addGame: addGame,
-  getGame: getGame
+  getGame: getGame,
+  getFen: getFen
 };
 

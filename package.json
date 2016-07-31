@@ -9,6 +9,7 @@
   "author": "Tyler Zeller",
   "license": "MIT",
   "dependencies": {
+    "chess.js": "^0.10.2",
     "tmi.js": "^1.1.1"
   }
 }
